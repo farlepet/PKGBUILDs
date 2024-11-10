@@ -1,0 +1,33 @@
+# Maintainer: Peter Farley <pfarley@pfarley.dev>
+
+pkgname=bytenuts-git
+_reponame=bytenuts
+pkgver=r41.64f8a0c
+pkgrel=1
+pkgdesc="Terminal Serial Communication App"
+url="https://github.com/cookthebook/bytenuts"
+arch=('x86_64')
+license=()
+depends=()
+# upstream doesn't recommend building docs
+makedepends=()
+optdepends=()
+source=('bytenuts::git+https://github.com/cookthebook/bytenuts')
+md5sums=('SKIP')
+
+build() {
+  cd "$srcdir/$_reponame"
+
+  make
+}
+
+package() {
+  cd "$srcdir/$_reponame"
+
+  install -Dv "build/bin/bytenuts" "$pkgdir/usr/bin/bytenuts"
+}
+
+pkgver() {
+  cd "$srcdir/$_reponame"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
