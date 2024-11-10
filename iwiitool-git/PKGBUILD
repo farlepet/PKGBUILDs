@@ -1,0 +1,35 @@
+# Maintainer: Peter Farley <pfarley@pfarley.dev>
+
+pkgname=iwiitool-git
+_reponame=iwiitool
+pkgver=r25.20b389a
+pkgrel=1
+pkgdesc="Set of tools for interacting with Apple ImageWriter II dot-matrix printers"
+url="https://github.com/farlepet/iwiitool"
+arch=('x86_64')
+license=()
+depends=()
+# upstream doesn't recommend building docs
+makedepends=()
+optdepends=()
+source=('iwiitool::git+https://github.com/farlepet/iwiitool')
+md5sums=('SKIP')
+
+build() {
+  cd "$srcdir/$_reponame"
+
+  make
+}
+
+package() {
+  cd "$srcdir/$_reponame"
+
+  install -Dv "iwiitool" "$pkgdir/usr/bin/iwiitool"
+  ln -sf "$pkgdir/usr/bin/iwiitool" "$pkgdir/usr/bin/iwiigfx"
+  ln -sf "$pkgdir/usr/bin/iwiitool" "$pkgdir/usr/bin/ansi2iwii"
+}
+
+pkgver() {
+  cd "$srcdir/$_reponame"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
